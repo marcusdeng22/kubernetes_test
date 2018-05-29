@@ -18,9 +18,13 @@
 # healthy, or 1 if the server fails to respond.
 
 ZK_CLIENT_PORT=${ZK_CLIENT_PORT:-2181}
+echo $ZK_CLIENT_PORT
+echo status
 OK=$(echo ruok | nc 127.0.0.1 $ZK_CLIENT_PORT)
 if [ "$OK" == "imok" ]; then
+	echo 0
 	exit 0
 else
+	echo 1
 	exit 1
 fi

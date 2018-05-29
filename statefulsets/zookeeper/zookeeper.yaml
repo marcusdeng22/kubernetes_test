@@ -50,24 +50,14 @@ spec:
       labels:
         app: zk
     spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: "app"
-                    operator: In
-                    values: 
-                    - zk
-              topologyKey: "kubernetes.io/hostname"
       containers:
       - name: k8szk
         imagePullPolicy: Always
         image: gcr.io/google_samples/k8szk:v3
         resources:
           requests:
-            memory: "2Gi"
-            cpu: "500m"
+            memory: "512Mi"
+            cpu: "100m"
         ports:
         - containerPort: 2181
           name: client
@@ -123,18 +113,6 @@ spec:
         - sh
         - -c
         - zkGenConfig.sh && zkServer.sh start-foreground
-        readinessProbe:
-          exec:
-            command:
-            - "zkOk.sh"
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
-        livenessProbe:
-          exec:
-            command:
-            - "zkOk.sh"
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
         volumeMounts:
         - name: datadir
           mountPath: /var/lib/zookeeper
@@ -148,4 +126,4 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 10Gi
+          storage: 3Gi
