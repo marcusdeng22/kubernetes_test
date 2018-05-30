@@ -12,7 +12,6 @@ ARG ZK_DIST=zookeeper-3.4.10
 RUN set -x \
     && apt-get update \
     && apt-get install -y openjdk-8-jre-headless wget netcat-openbsd \
-    && apt-get install -y nano \
     && wget -q "http://www.apache.org/dist/zookeeper/$ZK_DIST/$ZK_DIST.tar.gz" \
     && wget -q "http://www.apache.org/dist/zookeeper/$ZK_DIST/$ZK_DIST.tar.gz.asc" \
     && export GNUPGHOME="$(mktemp -d)" \
@@ -37,6 +36,8 @@ RUN set -x \
     /opt/zookeeper/$ZK_DIST.jar.md5 \
     /opt/zookeeper/$ZK_DIST.jar.sha1 \
     && apt-get autoremove -y wget \
+    && apt-get install -y nano \
+    && apt-get install -y dnsutils \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy configuration generator script to bin

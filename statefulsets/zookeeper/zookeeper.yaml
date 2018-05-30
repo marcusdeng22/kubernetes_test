@@ -50,14 +50,24 @@ spec:
       labels:
         app: zk
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values: 
+                    - zk
+              topologyKey: statefulset.kubernetes.io/pod-name
       containers:
       - name: k8szk
         imagePullPolicy: Always
-        image: gcr.io/google_samples/k8szk:v3
+        image: marcusdeng22/zk_kubernetes:v1
         resources:
           requests:
-            memory: "512Mi"
-            cpu: "100m"
+            memory: "1Gi"
+            cpu: "500m"
         ports:
         - containerPort: 2181
           name: client
@@ -116,6 +126,8 @@ spec:
         volumeMounts:
         - name: datadir
           mountPath: /var/lib/zookeeper
+      imagePullSecrets:
+        - name: regcred
       securityContext:
         runAsUser: 1000
         fsGroup: 1000
