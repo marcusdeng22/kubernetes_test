@@ -41,9 +41,30 @@ DOMAIN=`hostname -d`
 function print_servers() {
     for (( i=1; i<=$ZK_REPLICAS; i++ ))
     do
-        echo "server.$i=$NAME-$((i-1)).$DOMAIN:$ZK_SERVER_PORT:$ZK_ELECTION_PORT"
+        if [ $i -eq $MY_ID ]; then
+            echo "server.$i=0.0.0.0:$ZK_SERVER_PORT:$ZK_ELECTION_PORT"
+        else
+            echo "server.$i=$NAME-$((i-1)).$DOMAIN:$ZK_SERVER_PORT:$ZK_ELECTION_PORT"
+        fi
     done
 }
+
+function print_servers2() {
+    echo "in info print"
+    echo $ZK_SERVER_PORT
+    echo $ZK_ELECTION_PORT
+    echo $NAME
+    echo $DOMAIN
+    for (( i=1; i<=$ZK_REPLICAS; i++ ))
+    do
+      	if [ $i -eq $MY_ID ]; then
+            echo "server.$i=0.0.0.0:$ZK_SERVER_PORT:$ZK_ELECTION_PORT"
+        else
+            echo "server.$i=$NAME-$((i-1)).$DOMAIN:$ZK_SERVER_PORT:$ZK_ELECTION_PORT"
+        fi
+    done
+}
+
 
 function validate_env() {
     echo "Validating environment"
@@ -81,7 +102,7 @@ function validate_env() {
     echo "ZK_SNAP_RETAIN_COUNT=$ZK_SNAP_RETAIN_COUNT"
     echo "ZK_PURGE_INTERVAL=$ZK_PURGE_INTERVAL"
     echo "ENSEMBLE"
-    print_servers
+    print_servers2
     echo "Environment validation successful"
 }
 

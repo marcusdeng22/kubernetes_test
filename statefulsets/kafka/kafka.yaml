@@ -44,7 +44,7 @@ spec:
                     operator: In
                     values: 
                     - kafka
-              topologyKey: "kubernetes.io/hostname"
+              topologyKey: "statefulset.kubernetes.io/pod-name"
         podAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
              - weight: 1
@@ -55,7 +55,7 @@ spec:
                         operator: In
                         values: 
                         - zk
-                 topologyKey: "kubernetes.io/hostname"
+                 topologyKey: "statefuleset.kubernetes.io/pod-name"
       terminationGracePeriodSeconds: 300
       containers:
       - name: k8skafka
@@ -63,8 +63,8 @@ spec:
         image: gcr.io/google_samples/k8skafka:v1
         resources:
           requests:
-            memory: "1Gi"
-            cpu: 500m
+            memory: "512Mi"
+            cpu: 200m
         ports:
         - containerPort: 9093
           name: server
@@ -182,4 +182,4 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 10Gi
+          storage: 3Gi
