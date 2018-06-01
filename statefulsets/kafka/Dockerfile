@@ -9,6 +9,8 @@ ARG KAFKA_VERSION=1.1.0
 ARG KAFKA_DIST=kafka_2.11-1.1.0
 RUN set -x \
     && apt-get update \
+    && apt-get install -y nano \
+    && apt-get install -y dnsutils \
     && apt-get install -y openjdk-8-jre-headless wget \
 	&& wget -q "http://www.apache.org/dist/kafka/$KAFKA_VERSION/$KAFKA_DIST.tgz" \
     && wget -q "http://www.apache.org/dist/kafka/$KAFKA_VERSION/$KAFKA_DIST.tgz.asc" \
